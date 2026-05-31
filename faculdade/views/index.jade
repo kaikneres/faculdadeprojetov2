@@ -11,6 +11,10 @@ block content
       h2(class="text-center text-2xl font-extrabold tracking-tight text-gray-900") Entre na sua conta
       p(class="mt-2 text-center text-sm text-gray-500 font-medium") Bem-vindo ao Bar e Mercearia Silva
       
+      if typeof erro !== 'undefined' && erro
+        div(class="mt-4 p-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200 font-semibold text-center" role="alert")
+          span= erro
+      
       form(action="/login" method="POST" class="mt-8 space-y-6")
         div
           label(for="email" class="block text-sm font-bold text-gray-700") E-mail

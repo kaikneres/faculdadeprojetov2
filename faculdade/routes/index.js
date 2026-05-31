@@ -28,7 +28,7 @@ router.post('/login', async (req, res) => {
   try {
     const usuario = await db.Usuario.findOne({ where: { email: email } });
     if (!usuario) {
-      return res.send("Usuário não encontrado!");
+      return res.render('index', { title: 'Login', erro: 'E-mail não cadastrado!' });
     }
     if (usuario.senha === password) {
       // Grava o nome do usuário em um cookie que dura 24 horas
@@ -36,10 +36,10 @@ router.post('/login', async (req, res) => {
       // Redireciona para o dashboard (Home) após login bem sucedido
       res.redirect('/home');
     } else {
-      res.send("Senha incorreta!");
+      return res.render('index', { title: 'Login', erro: 'Senha incorreta!' });
     }
   } catch (error) {
-    res.status(500).send("Erro ao tentar logar: " + error.message);
+    return res.render('index', { title: 'Login', erro: 'Erro ao tentar logar: ' + error.message });
   }
 });
 
@@ -55,7 +55,7 @@ router.post('/cadastro', async (req, res) => {
     // Verifica se já existe usuário com esse email
     const usuarioExistente = await db.Usuario.findOne({ where: { email: email } });
     if (usuarioExistente) {
-      return res.send("Este email já está cadastrado!");
+      return res.render('cadastro', { title: 'Cadastro', erro: 'Este e-mail já está cadastrado!' });
     }
 
     // Cria o novo usuário
@@ -69,7 +69,7 @@ router.post('/cadastro', async (req, res) => {
     // Após o cadastro, redireciona para o login (ou poderia ser /home)
     res.redirect('/');
   } catch (error) {
-    res.status(500).send("Erro ao tentar cadastrar: " + error.message);
+    res.render('cadastro', { title: 'Cadastro', erro: 'Erro ao tentar cadastrar: ' + error.message });
   }
 });
 
@@ -198,11 +198,31 @@ const produtosLista = [
 /* Página Principal (Dashboard / Home) */
 router.get('/home', function(req, res, next) {
   const usuario_nome = req.cookies.usuario_nome || null;
+  const sucesso_mensagem = req.query.sucesso || null;
   res.render('home', { 
     title: 'Dashboard - Bar e Mercearia Silva', 
     usuario_nome: usuario_nome,
-    produtos: produtosLista 
+    produtos: produtosLista,
+    sucesso_mensagem: sucesso_mensagem
   });
+});
+
+/* Rota para Cadastrar Notificação de Produto Esgotado */
+router.post('/avisar-me', async (req, res) => {
+  const { produtoNome, email } = req.body;
+  try {
+    // Salva a solicitação no banco de dados usando o modelo Notificacao
+    await db.Notificacao.create({
+      produtoNome: produtoNome,
+      email: email
+    });
+    
+    // Redireciona com mensagem de sucesso
+    const msg = `Sucesso! Cadastramos o e-mail "${email}" para receber uma notificação assim que o produto "${produtoNome}" estiver de volta no estoque.`;
+    res.redirect('/home?sucesso=' + encodeURIComponent(msg));
+  } catch (error) {
+    res.status(500).send("Erro ao registrar interesse no produto: " + error.message);
+  }
 });
 
 /* Rota para Deslogar (Logout) */
