@@ -1,0 +1,119 @@
+extends layout
+
+block content
+  // Navbar Principal
+  nav(class="bg-[#C3521F] shadow-md sticky top-0 z-50")
+    div(class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8")
+      div(class="flex items-center justify-between h-20")
+        // Logo e Nome
+        div(class="flex items-center space-x-4")
+          div(class="bg-white p-1 rounded-md h-12 w-12 flex items-center justify-center shadow-sm")
+            // Ícone simulando a logo que vi na imagem
+            svg(class="w-8 h-8 text-[#C3521F]" fill="none" stroke="currentColor" viewBox="0 0 24 24")
+              path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z")
+          span(class="text-white text-xl md:text-2xl font-bold tracking-wider") BAR E MERCEARIA SILVA
+        
+        // Botão Direita
+        div(class="hidden sm:flex items-center space-x-4")
+          if typeof usuario_nome !== 'undefined' && usuario_nome
+            span(class="text-white font-bold text-sm tracking-wide bg-[#A84518]/40 px-4 py-2 rounded-lg border border-white/20") Olá, #{usuario_nome}!
+            a(href="/logout" class="border border-white/40 bg-[#B04517] hover:bg-white hover:text-[#C3521F] text-white px-4 py-2 rounded text-sm font-medium transition-all shadow-sm") Sair
+          else
+            a(href="/" class="border border-white/40 bg-[#B04517] hover:bg-white hover:text-[#C3521F] text-white px-6 py-2.5 rounded text-sm font-medium transition-all shadow-sm") Entrar / Cadastrar
+
+  // Main Content - Vitrine de Produtos
+  main(class="bg-[#FAF6F0] min-h-screen py-12")
+    div(class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8")
+      
+      // Título da Seção e Filtros
+      div(class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4")
+        div
+          h1(class="text-2xl font-bold text-gray-800") Nossos Produtos
+          p(class="text-gray-500") Confira as novidades do nosso bar e mercearia
+        
+        // Filtros
+        div(class="flex items-center space-x-2 bg-white p-1 rounded-lg shadow-sm border border-gray-200")
+          button(class="filter-btn active px-4 py-1.5 rounded-md text-sm font-medium transition-colors bg-[#C3521F] text-white" data-filter="all") Todos
+          button(class="filter-btn px-4 py-1.5 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors" data-filter="disponivel") Disponíveis
+          button(class="filter-btn px-4 py-1.5 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors" data-filter="esgotado") Esgotados
+      
+      // Grid de Produtos
+      div(class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6")
+        if typeof produtos !== 'undefined' && produtos && produtos.length > 0
+          each produto in produtos
+            if produto.status === 'Esgotado'
+              // Produto (Esgotado)
+              div(class="product-card bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col relative hover:shadow-md transition-all duration-300 transform hover:-translate-y-1" data-status="esgotado")
+                // Overlay de Esgotado
+                div(class="absolute top-0 left-0 w-full h-[220px] bg-[#993333]/60 flex items-center justify-center z-10")
+                  span(class="text-white font-bold tracking-[0.2em] text-xl drop-shadow-lg") ESGOTADO
+                  
+                div(class="p-5 flex-grow flex flex-col items-center")
+                  img(src=produto.imagem alt=produto.nome class="h-44 object-contain mb-5 opacity-40")
+                  h3(class="text-gray-800 font-bold text-center text-[15px] mb-1")= produto.nome
+                  p(class="text-gray-400 text-[10px] font-semibold uppercase tracking-widest mb-3")= produto.categoria
+                  p(class="text-[#C3521F] font-bold text-xl mb-5")= produto.precoFormatado
+                  
+                  div(class="mt-auto w-full space-y-2 relative z-20")
+                    button(class="w-full bg-[#fdeded] border border-[#f5c2c7] text-[#d32f2f] py-1.5 rounded-md text-sm font-semibold flex items-center justify-center gap-1.5")
+                      svg(class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24")
+                        path(stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12")
+                      | Indisponível
+                    button(class="w-full bg-[#fff4e5] border border-[#ffe0b2] text-[#ed6c02] py-1.5 rounded-md text-[11px] font-semibold flex items-center justify-center gap-1.5 hover:bg-[#ffe0b2] transition-colors")
+                      svg(class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24")
+                        path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9")
+                      | Avisar-me quando chegar
+            else
+              // Produto (Disponível)
+              div(class="product-card bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-md transition-all duration-300 transform hover:-translate-y-1" data-status="disponivel")
+                div(class="p-5 flex-grow flex flex-col items-center")
+                  img(src=produto.imagem alt=produto.nome class="h-44 object-contain mb-5")
+                  h3(class="text-gray-800 font-bold text-center text-[15px] mb-1")= produto.nome
+                  p(class="text-gray-400 text-[10px] font-semibold uppercase tracking-widest mb-3")= produto.categoria
+                  p(class="text-[#C3521F] font-bold text-xl mb-5")= produto.precoFormatado
+                  
+                  div(class="mt-auto w-full")
+                    button(class="w-full bg-[#Edf7ed] border border-[#a3d9a5] text-[#2e7d32] py-2 rounded-md text-sm font-semibold flex items-center justify-center gap-1.5 transition-colors")
+                      svg(class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24")
+                        path(stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7")
+                      | Disponível
+        else
+          // Fallback (exibe a mensagem enquanto o servidor não é reiniciado)
+          div(class="col-span-full py-20 text-center")
+            div(class="inline-block p-8 bg-yellow-50 rounded-2xl border border-yellow-200")
+              svg(class="w-16 h-16 text-yellow-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24")
+                path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z")
+              h2(class="text-2xl font-bold text-yellow-800 mb-2") Atualização Pendente
+              p(class="text-yellow-700") O site foi atualizado, mas o seu servidor precisa ser reiniciado para exibir os produtos.
+              p(class="text-yellow-700 mt-2 font-bold") Vá ao terminal e reinicie o npm start.
+
+  // Script para o Filtro de Produtos
+  script.
+    document.addEventListener('DOMContentLoaded', () => {
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const productCards = document.querySelectorAll('.product-card');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Remover estilos de ativo de todos
+          filterBtns.forEach(b => {
+            b.classList.remove('active', 'bg-[#C3521F]', 'text-white');
+            b.classList.add('text-gray-600', 'hover:bg-gray-100');
+          });
+          
+          // Adicionar estilo ativo no clicado
+          btn.classList.add('active', 'bg-[#C3521F]', 'text-white');
+          btn.classList.remove('text-gray-600', 'hover:bg-gray-100');
+
+          const filterValue = btn.getAttribute('data-filter');
+
+          productCards.forEach(card => {
+            if (filterValue === 'all' || card.getAttribute('data-status') === filterValue) {
+              card.style.display = 'flex';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+    });

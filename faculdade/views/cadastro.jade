@@ -1,0 +1,40 @@
+extends layout
+
+block content
+  div(class="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8 bg-[#FAF6F0]")
+    div(class="sm:mx-auto sm:w-full sm:max-w-md bg-white py-10 px-8 shadow-xl rounded-2xl border border-gray-100")
+      // Logo ou Ícone do Bar
+      div(class="mx-auto bg-[#C3521F] p-4 rounded-xl h-20 w-20 flex items-center justify-center mb-6 shadow-md transform -rotate-3 hover:rotate-0 transition-transform")
+        svg(class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24")
+          path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z")
+          
+      h2(class="text-center text-2xl font-extrabold tracking-tight text-gray-900") Crie sua conta
+      p(class="mt-2 text-center text-sm text-gray-500 font-medium") Junte-se ao Bar e Mercearia Silva
+      
+      form(action="/cadastro" method="POST" class="mt-8 space-y-5")
+        div
+          label(for="nome" class="block text-sm font-bold text-gray-700") Nome Completo
+          div(class="mt-1.5")
+            input#nome(type="text" name="nome" required class="block w-full rounded-lg bg-gray-50 border border-gray-200 px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C3521F] focus:border-[#C3521F] focus:bg-white transition-all sm:text-sm shadow-inner")
+            
+        div
+          label(for="email" class="block text-sm font-bold text-gray-700") E-mail
+          div(class="mt-1.5")
+            input#email(type="email" name="email" required autocomplete="email" class="block w-full rounded-lg bg-gray-50 border border-gray-200 px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C3521F] focus:border-[#C3521F] focus:bg-white transition-all sm:text-sm shadow-inner")
+            
+        div
+          label(for="telefone" class="block text-sm font-bold text-gray-700") Telefone (WhatsApp)
+          div(class="mt-1.5")
+            input#telefone(type="tel" name="telefone" required class="block w-full rounded-lg bg-gray-50 border border-gray-200 px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C3521F] focus:border-[#C3521F] focus:bg-white transition-all sm:text-sm shadow-inner")
+        
+        div
+          label(for="password" class="block text-sm font-bold text-gray-700") Senha
+          div(class="mt-1.5")
+            input#password(type="password" name="password" required autocomplete="new-password" class="block w-full rounded-lg bg-gray-50 border border-gray-200 px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C3521F] focus:border-[#C3521F] focus:bg-white transition-all sm:text-sm shadow-inner")
+        
+        div(class="pt-4")
+          button(type="submit" class="flex w-full justify-center rounded-lg bg-[#C3521F] px-3 py-3.5 text-sm font-bold text-white shadow-lg hover:bg-[#A84518] hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C3521F] transition-all transform hover:-translate-y-0.5") CADASTRAR AGORA
+      
+      div(class="mt-6 pt-6 border-t border-gray-100")
+        p(class="text-center text-sm text-gray-600 font-medium") Já tem uma conta? 
+          a(href="/" class="font-bold text-[#C3521F] hover:text-[#A84518] transition-colors ml-1") Faça login
