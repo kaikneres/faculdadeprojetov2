@@ -30,6 +30,21 @@ block content
           svg(class="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24")
             path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z")
           span= sucesso_mensagem
+
+      if typeof emailsEnviados !== 'undefined' && emailsEnviados && emailsEnviados.length > 0
+        div(class="mb-6 p-5 rounded-xl bg-blue-50 border border-blue-200 shadow-sm" id="email-simulator-alert")
+          div(class="flex items-start space-x-3")
+            svg(class="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24")
+              path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z")
+            div
+              h3(class="text-blue-800 font-bold text-sm") 📧 [Simulador de E-mail] Notificação Disparada com Sucesso!
+              p(class="text-blue-700 text-xs mt-1") Como o status do produto mudou para **Disponível**, a nossa simulação disparou e-mails para os seguintes interessados:
+              ul(class="mt-2.5 space-y-1 text-xs text-blue-900 list-disc list-inside font-semibold")
+                each notif in emailsEnviados
+                  li E-mail enviado para 
+                    strong= notif.email
+                    |  sobre o produto 
+                    strong= notif.produtoNome
       
       // Título da Seção e Filtros
       div(class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4")
@@ -68,11 +83,11 @@ block content
                     
                     form(action="/avisar-me" method="POST" class="w-full mt-2 space-y-1.5")
                       input(type="hidden" name="produtoNome" value=produto.nome)
-                      input(type="email" name="email" required placeholder="Digite seu e-mail..." class="block w-full px-2.5 py-1.5 text-xs rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#ed6c02] focus:border-[#ed6c02] transition-all shadow-inner text-center font-medium")
-                      button(type="submit" class="w-full bg-[#fff4e5] border border-[#ffe0b2] text-[#ed6c02] py-1.5 rounded-lg text-[10px] font-bold flex items-center justify-center gap-1.5 hover:bg-[#ffe0b2] transition-colors")
-                        svg(class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24")
-                          path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9")
-                        | Avisar-me quando chegar
+                      p(class="text-[9px] text-[#A84518] font-bold text-center leading-normal mb-1") Preencha os campos e assim que o produto voltar ao estoque avisamos você! :)
+                      input(type="text" name="nome" required placeholder="Nome" class="block w-full px-2.5 py-1 text-xs rounded border border-gray-200 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-[#ed6c02] focus:border-[#ed6c02] transition-all shadow-inner text-center font-medium")
+                      input(type="email" name="email" required placeholder="E-mail" class="block w-full px-2.5 py-1 text-xs rounded border border-gray-200 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-[#ed6c02] focus:border-[#ed6c02] transition-all shadow-inner text-center font-medium")
+                      button(type="submit" class="w-full bg-[#2F2F2F] text-white py-1.5 rounded text-[10px] font-extrabold flex items-center justify-center gap-1 hover:bg-[#1C1C1C] transition-colors uppercase tracking-wider")
+                        | AVISE-ME >
             else
               // Produto (Disponível)
               div(class="product-card bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-md transition-all duration-300 transform hover:-translate-y-1" data-status="disponivel")

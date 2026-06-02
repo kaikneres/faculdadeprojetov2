@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Notificacao.init({
     produtoNome: DataTypes.STRING,
+    nome: DataTypes.STRING,
     email: DataTypes.STRING
   }, {
     sequelize,
